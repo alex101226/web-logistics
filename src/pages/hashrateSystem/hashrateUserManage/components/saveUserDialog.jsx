@@ -14,7 +14,7 @@ import {
   Box, OutlinedInput, styled
 } from "@mui/material";
 import {userStatusFilter} from '@/filters'
-import {updateUser, addUser} from '@/services';
+import {updateUser, addUser, getRoleList} from '@/services';
 import { message } from '@/utils'
 
 const initialState = {
@@ -25,6 +25,7 @@ const initialState = {
   username: '',
   password: '',
   status: '1',
+  role_id: ''
 }
 
 const InputHelp = styled(FormHelperText)({
@@ -44,10 +45,23 @@ const SaveUserDialog = (props) => {
     defaultValues: initialState
   });
 
+  //  获取角色
+  const [roleOptions, setRoleOptions] = useState([]);
+  const fetchRole = () => {
+    getRoleList().then((res) => {
+      if (res.code === 0) {
+        setRoleOptions(res.data.data)
+      }
+    })
+  }
+
   //  初始化赋值
   useEffect(() => {
-    if (data && open) {
-      reset({...data});
+    if (open) {
+      fetchRole()
+      if (data) {
+        reset({...data});
+      }
     }
   }, [open])
 
@@ -55,13 +69,13 @@ const SaveUserDialog = (props) => {
   const [loading, setLoading] = useState(false);
   //  执行添加
   const onAdd = (data) => {
-    const params = {
-      ...data,
-      role_id: roleId
-    }
+    // const params = {
+    //   ...data,
+    //   role_id: roleId
+    // }
     if (loading) return;
     setLoading(true)
-    addUser(params).then(res => {
+    addUser(data).then(res => {
       if (res.code === 0) {
         message.success('添加成功')
         handleClose(true)
@@ -114,7 +128,7 @@ const SaveUserDialog = (props) => {
     return <Box component="form">
       {
           isAdd()
-          && <Fragment>
+          ? <Fragment>
             <FormControl fullWidth error={!!errors.username} margin="normal">
               <InputLabel htmlFor="username-input">用户名</InputLabel>
               <OutlinedInput
@@ -148,8 +162,22 @@ const SaveUserDialog = (props) => {
                 {errors.password?.message}
               </InputHelp>
             </FormControl>
-          </Fragment>
+          </Fragment> : null
       }
+      <FormControl fullWidth error={!!errors.nickname} margin="normal">
+        <InputLabel htmlFor="nickname-input">用户昵称</InputLabel>
+        <OutlinedInput
+            id="nickname-input"
+            aria-describedby="nickname-helper-text"
+            label="用户昵称"
+            {...register('nickname', {
+              required: '请输入用户昵称',
+            })}
+        />
+        <InputHelp id="nickname-helper-text">
+          {errors.nickname?.message}
+        </InputHelp>
+      </FormControl>
       <Controller
           name="status"
           control={control}
@@ -176,20 +204,31 @@ const SaveUserDialog = (props) => {
               </FormControl>
           )}
       />
-      <FormControl fullWidth error={!!errors.nickname} margin="normal">
-        <InputLabel htmlFor="nickname-input">用户昵称</InputLabel>
-        <OutlinedInput
-            id="nickname-input"
-            aria-describedby="nickname-helper-text"
-            label="用户昵称"
-            {...register('nickname', {
-              required: '请输入用户昵称',
-            })}
-        />
-        <InputHelp id="nickname-helper-text">
-          {errors.nickname?.message}
-        </InputHelp>
-      </FormControl>
+      <Controller
+          name="role_id"
+          control={control}
+          rules={{ required: '请选择角色' }}
+          render={({ field, fieldState }) => (
+              <FormControl fullWidth error={!!fieldState.error} margin="normal">
+                <InputLabel id="status-input">角色</InputLabel>
+                <Select
+                    labelId="role_id-input"
+                    label="角色"
+                    aria-describedby="role_id-helper-text"
+                    {...field}
+                >
+                  {roleOptions.map((item, index) => (
+                      <MenuItem value={item.id} key={index}>
+                        {item.role_description}
+                      </MenuItem>
+                  ))}
+                </Select>
+                <InputHelp id="status-helper-text">
+                  {fieldState.error?.message}
+                </InputHelp>
+              </FormControl>
+          )}
+      />
       <FormControl fullWidth error={!!errors.department} margin="normal">
         <InputLabel htmlFor="department-input">部门</InputLabel>
         <OutlinedInput

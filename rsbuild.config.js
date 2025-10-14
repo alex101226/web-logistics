@@ -27,12 +27,14 @@ export default defineConfig({
     },
   },
   html: {
-    title: '越泰高精度定位及算力管理系统',
-    favicon: './src/assets/images/logo-1.svg', // 或者 public/favicon.ico
+    // title: '高精度物流智能调度与算力管理系统',
+    // favicon: './src/assets/images/logo-1.svg', // 或者 public/favicon.ico
+    title: '',
+    favicon: '', // 或者 public/favicon.ico
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:3000'
+      '/api': 'http://localhost:5000'
     }
   }
 });

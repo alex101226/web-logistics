@@ -6,8 +6,9 @@
   "scripts": {
     "serve": "NODE_OPTIONS='--experimental-vm-modules' rsbuild dev",
     "build": "rsbuild build",
-    "dev": "rsbuild dev --open",
-    "preview": "rsbuild preview"
+    "dev": "rsbuild dev --open --port 3003",
+    "preview": "rsbuild preview",
+    "build:file": "rsbuild build && mv dist logistics"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -16,7 +16,7 @@ const SidebarItem = ({list = []}) => {
 
   //  打开下级
   const onToggle = (menu) => {
-    console.log('toggle一直在出发吗')
+    // console.log('toggle一直在出发吗')
     setOpenMenu((prev) => ({ ...prev, [menu]: !prev[menu] }));
   };
 
@@ -41,18 +41,26 @@ const SidebarItem = ({list = []}) => {
 
   const isAdmin = (roles) => userInfo.role_name === 'admin' && !roles.includes('admin');
 
+  //  辅助函数
+  const buildPath = (parentPath, childPath, isIndex = false) => {
+    if (isIndex) return parentPath; // index* *路由*
+    if (!childPath) return parentPath;
+    return `${parentPath}/${childPath}`.replace(/\/+/g, '/');
+  }
+
   // 递归渲染函数
-  const renderMenuItems = (items, openMenu, onToggle, onRouter, level = 0) => {
+  const renderMenuItems = (items, openMenu, onToggle, onRouter, parentPath = '', level = 0) => {
     return items.map((item, index) => {
       const hasChild = item.children?.length > 0;
+      const fullPath = buildPath(parentPath, item.path, item.index);
       return (
         <Fragment key={index}>
           {
-            isAdmin(item.handle.role)
+            isAdmin(item.handle.role) || item.handle.hideSide
               ? null
                 : <ListItemButton
-                    selected={item.path === location.pathname}
-                    onClick={() => hasChild ? onToggle(item.handle.alias) : onRouter(item.path)}
+                    selected={location.pathname.includes(item.path)}
+                    onClick={() => hasChild ? onToggle(item.handle.alias) : onRouter(fullPath)}
                     sx={{
                       pl: 2 + level * 2,
                       '&.Mui-selected': {
@@ -73,7 +81,7 @@ const SidebarItem = ({list = []}) => {
           {hasChild && (
             <Collapse in={openMenu[item?.handle.alias]} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {renderMenuItems(item.children, openMenu, onToggle, level + 1)}
+                {renderMenuItems(item.children, openMenu, onToggle, onRouter, fullPath,level + 1)}
               </List>
             </Collapse>
           )}
@@ -82,6 +90,6 @@ const SidebarItem = ({list = []}) => {
     });
   };
 
-  return renderMenuItems(list, openMenu, onToggle, onRouter);
+  return renderMenuItems(list, openMenu, onToggle, onRouter, '');
 }
 export default SidebarItem;

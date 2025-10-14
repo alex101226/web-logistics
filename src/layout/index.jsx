@@ -11,35 +11,41 @@ import { carRoute } from '@/pages/carSystem/carRoute'
 import { projectRoute } from '@/pages/projectSystem/projectRoute'
 import { peopleRoute } from '@/pages/peopleSystem/peopleRoute'
 import serviceImage from "@/assets/images/service.png";
+import routes from "@/routes.js";
 
 
-const menuData = {
-  //  算力系统菜单
-  hashrate: hashrateRoute,
-  //  生产管理菜单
-  project: projectRoute,
-  //  车辆管理菜单
-  car: carRoute,
-  //  人员管理菜单
-  people: peopleRoute,
-  //  ai助手菜单
-  // ai: aiRoute,
-}
+// const menuData = {
+//   //  算力系统菜单
+//   hashrate: hashrateRoute,
+//   //  生产管理菜单
+//   project: projectRoute,
+//   //  车辆管理菜单
+//   car: carRoute,
+//   //  人员管理菜单
+//   people: peopleRoute,
+//   //  ai助手菜单
+//   // ai: aiRoute,
+// }
 
 const Layout = () => {
   const matches = useMatches();
   const current = matches.at(-1);
-  const { currentSystem, setSystem } = useSystem()
+  // const { currentSystem, setSystem } = useSystem()
 
-  useEffect(() => {
-    const has = globalThis.CONSTANTS.CURRENT_SYSTEM.includes(current.handle.system)
-    const isCurrent = currentSystem !== current.handle.system
-    if (has && isCurrent) {
-      setSystem(current.handle.system)
-    }
-  }, [current.handle.system])
+  const getMenuList = () => {
+    const newRoutes = routes.routes.filter(route => route.path === '/')
+    return newRoutes[0].children || []
+  }
 
-  const getMenuList = () => menuData[currentSystem]
+  // useEffect(() => {
+  //   const has = globalThis.CONSTANTS.CURRENT_SYSTEM.includes(current.handle.system)
+  //   const isCurrent = currentSystem !== current.handle.system
+  //   if (has && isCurrent) {
+  //     setSystem(current.handle.system)
+  //   }
+  // }, [current.handle.system])
+
+  // const getMenuList = () => menuData[currentSystem]
 
   //  客服
   const location = useLocation();
@@ -68,11 +74,7 @@ const Layout = () => {
         <Header />
       </Toolbar>
       <Stack direction="row" flexGrow={1}>
-        {
-          current.handle.hideSide
-              ? null
-              : <Sidebar><SidebarItem list={getMenuList()}/></Sidebar>
-        }
+        <Sidebar><SidebarItem list={getMenuList()}/></Sidebar>
         <Box
             component="main"
             sx={{
