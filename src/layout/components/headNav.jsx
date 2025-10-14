@@ -28,14 +28,13 @@ const pages = [
     icon: <LocalShippingIcon />,
     alias: 'car',
   },
-  {
-    id: 4,
-    name: '人员安全管理',
-    link: '/people-position',
-    icon: <GroupRoundedIcon />,
-    alias: 'people',
-  },
-  // { id: 5, url: image4, title: '人工智能AI助手', link: '/ai-safety'},
+  // {
+  //   id: 4,
+  //   name: '人员安全管理',
+  //   link: '/people-position',
+  //   icon: <GroupRoundedIcon />,
+  //   alias: 'people',
+  // },
 ]
 
 const NavItem = styled(ListItemButton)(({theme}) => {

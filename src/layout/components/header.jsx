@@ -119,7 +119,7 @@ const Header = () => {
         <Toolbar>
           <SystemLogo />
           <Box sx={{ ml: 14 }} />
-          <HeadNav />
+          {/*<HeadNav />*/}
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'right' }}>
             {
               token

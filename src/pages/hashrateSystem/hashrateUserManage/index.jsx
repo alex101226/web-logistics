@@ -7,6 +7,7 @@ import {userStatusFilter} from '@/filters'
 import { getHashrateUser } from '@/services/index.js'
 import {coverDateString} from "@/utils/index.js";
 
+const PAGE_SIZE = 10;
 const HashrateUserManage = () => {
   const {USER_STATUS_OPTIONS, renderUserStatus} = userStatusFilter()
   //  昵称，账户，部门，职位，管理员角色，账号状态，修改
@@ -52,8 +53,7 @@ const HashrateUserManage = () => {
   const fetchUser = (p = 1) => {
     const params = {
       page: p,
-      pageSize: 5,
-      role_id: 1
+      pageSize: PAGE_SIZE,
     }
     getHashrateUser(params).then((res) => {
       if (res.code === 0) {
@@ -111,7 +111,7 @@ const HashrateUserManage = () => {
           data.length > 0
             ?  <CustomPagination
                   total={total}
-                  pageSize={5}
+                  pageSize={PAGE_SIZE}
                   page={page}
                   totalPage={totalPages}
                   savePage={savePage}

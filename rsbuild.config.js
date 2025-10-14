@@ -2,7 +2,7 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { pluginLess } from '@rsbuild/plugin-less';
-import path from 'path';
+import path from 'node:path';
 
 export default defineConfig({
   plugins: [
@@ -27,12 +27,19 @@ export default defineConfig({
     },
   },
   html: {
-    title: '越泰高精度定位及算力管理系统',
-    favicon: './src/assets/images/logo-1.svg', // 或者 public/favicon.ico
+    // title: '高精度物流智能调度与算力管理系统',
+    // favicon: './src/assets/images/logo-1.svg', // 或者 public/favicon.ico
+    title: '',
+    favicon: '', // 或者 public/favicon.ico
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:3000'
+      '/api': 'http://127.0.0.1:5000'
     }
+  },
+  output: {
+	distPath: {
+	  root: 'logistics'
+	}
   }
 });
