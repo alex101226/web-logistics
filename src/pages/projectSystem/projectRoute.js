@@ -17,18 +17,18 @@ export const projectRoute = [
       role: ['admin', 'root']
     },
     children: [
-      {
-        path: 'monitor',
-        Component: ProjectMonitor,
-        handle: {
-          hideMenuIcon: false,
-          hideSide: false,
-          system: 'project',
-          title: '摄像头监控',
-          // icon: <VideocamOutlinedIcon />,
-          role: ['admin', 'root']
-        }
-      },
+      // {
+      //   path: 'monitor',
+      //   Component: ProjectMonitor,
+      //   handle: {
+      //     hideMenuIcon: false,
+      //     hideSide: false,
+      //     system: 'project',
+      //     title: '摄像头监控',
+      //     // icon: <VideocamOutlinedIcon />,
+      //     role: ['admin', 'root']
+      //   }
+      // },
       {
         path: 'fire-device',
         Component: ProjectFireDevice,
