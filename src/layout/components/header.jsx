@@ -117,7 +117,7 @@ const Header = () => {
   return (
       <AppBar position="fixed" elevation={0} component="header">
         <Toolbar>
-          <SystemLogo />
+          {/*<SystemLogo />*/}
           <Box sx={{ ml: 14 }} />
           {/*<HeadNav />*/}
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'right' }}>
